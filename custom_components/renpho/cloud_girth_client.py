@@ -107,8 +107,8 @@ class CloudGirthClient:
 
             records.extend(batch)
 
-            total = payload.get("total", 0)
-            if len(records) >= total or len(batch) < 100:
+            total = payload.get("total", 0) if isinstance(payload, dict) else 0
+            if len(batch) < 100 or (total and len(records) >= total):
                 break
             page += 1
 
