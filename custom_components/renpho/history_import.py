@@ -85,9 +85,13 @@ async def async_import_all_history(
         if not stats:
             continue
 
-        # De-duplicate by start time (keep last) then sort
-        by_time: dict[datetime, StatisticData] = {s.start: s for s in stats}
-        stats = sorted(by_time.values(), key=lambda s: s.start)
+        # De-duplicate by start time (keep last) then sort.
+        # StatisticData is a TypedDict in HA 2024+, so use dict key access.
+        def _start(s: StatisticData) -> datetime:
+            return s["start"] if isinstance(s, dict) else s.start  # type: ignore[index]
+
+        by_time = {_start(s): s for s in stats}
+        stats = sorted(by_time.values(), key=_start)
 
         metadata = StatisticMetaData(
             has_mean=True,
