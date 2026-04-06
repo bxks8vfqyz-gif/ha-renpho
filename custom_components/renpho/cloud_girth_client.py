@@ -19,17 +19,7 @@ _LOGGER = logging.getLogger(__name__)
 _BASE_URL = "https://cloud.renpho.com"
 _AES_KEY = b"ed*wijdi$h6fe3ew"
 
-# Candidate paths — tried in order until one returns non-404.
-_GIRTH_PATH_CANDIDATES = [
-    "/RenphoHealth/girth/queryAllGirthDataList",
-    "/RenphoHealth/girth/queryAllGirthMeasureDataList",
-    "/RenphoHealth/girth/listGirthData",
-    "/RenphoHealth/girth/queryGirthDataList",
-    "/RenphoHealth/girth/queryUserGirthList",
-    "/RenphoHealth/bodyGirth/queryAllGirthDataList",
-    "/renpho-aggregation/girth/queryAllGirthDataList",
-    "/renpho-aggregation/girth/list",
-]
+_GIRTH_PATH = "/RenphoHealth/renpho/girth/queryAllGirthsDataList"
 
 
 def _aes_encrypt(plaintext: str) -> str:
@@ -66,33 +56,8 @@ class CloudGirthClient:
             "platform": "android",
         }
 
-    def _find_working_path(self) -> str | None:
-        """Try candidate paths and return the first one that isn't a 404."""
-        body = _encrypt_body({"pageNum": 1, "pageSize": 1, "userIds": [self._user_id]})
-        for path in _GIRTH_PATH_CANDIDATES:
-            resp = requests.post(
-                f"{_BASE_URL}{path}",
-                json=body,
-                headers=self._headers,
-                timeout=30,
-            )
-            if resp.status_code == 404:
-                _LOGGER.debug("Girth path 404: %s", path)
-                continue
-            _LOGGER.info("Found working girth path: %s (status %s)", path, resp.status_code)
-            return path
-        return None
-
     def fetch_all(self) -> list[dict]:
         """Return all girth records, newest first. Returns [] if endpoint unavailable."""
-        path = self._find_working_path()
-        if path is None:
-            _LOGGER.error(
-                "No working girth endpoint found on cloud.renpho.com. "
-                "Tried: %s", _GIRTH_PATH_CANDIDATES
-            )
-            return []
-
         records: list[dict] = []
         page = 1
         while True:
@@ -102,14 +67,14 @@ class CloudGirthClient:
                 "userIds": [self._user_id],
             })
             resp = requests.post(
-                f"{_BASE_URL}{path}",
+                f"{_BASE_URL}{_GIRTH_PATH}",
                 json=body,
                 headers=self._headers,
                 timeout=30,
             )
             resp.raise_for_status()
             result = resp.json()
-            _LOGGER.debug("Cloud girth page %d raw response: %s", page, result)
+            _LOGGER.debug("Cloud girth page %d raw response code=%s", page, result.get("code"))
 
             if result.get("code") != 0 or not result.get("data"):
                 if page == 1:
@@ -121,6 +86,7 @@ class CloudGirthClient:
                 break
 
             payload = json.loads(_aes_decrypt(result["data"]))
+            _LOGGER.info("Cloud girth page %d decrypted payload keys: %s", page, list(payload.keys()) if isinstance(payload, dict) else payload)
             _LOGGER.debug("Cloud girth page %d decrypted: %s", page, payload)
 
             # Try common list field names
