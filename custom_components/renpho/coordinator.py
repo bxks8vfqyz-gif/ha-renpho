@@ -10,8 +10,8 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
+from .cloud_girth_client import CloudGirthClient
 from .const import DOMAIN, POLL_INTERVAL_MINUTES
-from .girth_client import GirthClient
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -46,9 +46,9 @@ class RenphoCoordinator(DataUpdateCoordinator[dict]):
         data: dict = dict(measurements[0])
         _LOGGER.debug("Renpho scale data: %s", data)
 
-        # Girth (tape measure) measurements
+        # Girth (tape measure) measurements — uses same token as scale client
         try:
-            girth = GirthClient(self._email, self._password).fetch()
+            girth = CloudGirthClient(scale_client.token, scale_client.user_id).get_latest()
             _LOGGER.debug("Renpho girth data: %s", girth)
             data.update(girth)
         except Exception as err:  # noqa: BLE001
