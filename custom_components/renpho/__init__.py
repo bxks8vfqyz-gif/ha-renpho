@@ -12,7 +12,7 @@ from .history_import import async_import_all_history
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS = ["sensor"]
+PLATFORMS = ["button", "sensor"]
 
 # Store key to track whether history has been imported for this entry.
 _HISTORY_IMPORTED_KEY = "history_imported"
