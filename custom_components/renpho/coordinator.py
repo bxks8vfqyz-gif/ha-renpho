@@ -37,10 +37,13 @@ class RenphoCoordinator(DataUpdateCoordinator[dict]):
 
     def _fetch(self) -> dict:
         """Synchronous fetch — runs in executor thread."""
-        # Scale measurements
+        # Scale measurements — returns list sorted newest-first
         scale_client = RenphoClient(self._email, self._password)
         scale_client.login()
-        data: dict = dict(scale_client.get_all_measurements())
+        measurements = scale_client.get_all_measurements()
+        if not measurements:
+            raise UpdateFailed("No measurements returned from Renpho API")
+        data: dict = dict(measurements[0])
         _LOGGER.debug("Renpho scale data: %s", data)
 
         # Girth (tape measure) measurements
