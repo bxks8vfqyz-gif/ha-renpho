@@ -26,9 +26,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
-    # Import full history once per entry (not on every restart).
-    if not entry.data.get(_HISTORY_IMPORTED_KEY):
-        hass.async_create_task(_run_history_import(hass, entry))
+    # History import disabled pending HA 2026.4 statistic_id compatibility fix.
+    # if not entry.data.get(_HISTORY_IMPORTED_KEY):
+    #     hass.async_create_task(_run_history_import(hass, entry))
 
     return True
 

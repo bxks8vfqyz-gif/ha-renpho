@@ -76,10 +76,10 @@ class CloudGirthClient:
             result = resp.json()
             _LOGGER.debug("Cloud girth page %d raw response code=%s", page, result.get("code"))
 
-            if result.get("code") != 0 or not result.get("data"):
+            if not result.get("data"):
                 if page == 1:
                     _LOGGER.warning(
-                        "Cloud girth endpoint returned code=%s msg=%s",
+                        "Cloud girth endpoint returned no data: code=%s msg=%s",
                         result.get("code"),
                         result.get("msg"),
                     )
