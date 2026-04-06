@@ -86,7 +86,7 @@ class CloudGirthClient:
                 break
 
             payload = json.loads(_aes_decrypt(result["data"]))
-            _LOGGER.info("Cloud girth decrypted payload type=%s sample=%s", type(payload).__name__, str(payload)[:200])
+            _LOGGER.warning("Cloud girth decrypted payload type=%s sample=%s", type(payload).__name__, str(payload)[:500])
 
             # API returns either a list directly or a dict wrapping a list
             if isinstance(payload, list):
