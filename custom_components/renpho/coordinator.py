@@ -52,6 +52,11 @@ class RenphoCoordinator(DataUpdateCoordinator[dict]):
             _LOGGER.debug("Renpho girth data: %s", girth)
             data.update(girth)
         except Exception as err:  # noqa: BLE001
-            _LOGGER.warning("Could not fetch Renpho girth data: %s", err)
+            _LOGGER.error(
+                "Could not fetch Renpho girth data: %s: %s",
+                type(err).__name__,
+                err,
+                exc_info=True,
+            )
 
         return data
