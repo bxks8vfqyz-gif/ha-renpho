@@ -11,6 +11,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN, POLL_INTERVAL_MINUTES
+from .girth_client import GirthClient
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -36,8 +37,18 @@ class RenphoCoordinator(DataUpdateCoordinator[dict]):
 
     def _fetch(self) -> dict:
         """Synchronous fetch — runs in executor thread."""
-        client = RenphoClient(self._email, self._password)
-        client.login()
-        data = client.get_all_measurements()
-        _LOGGER.debug("Renpho data: %s", data)
+        # Scale measurements
+        scale_client = RenphoClient(self._email, self._password)
+        scale_client.login()
+        data: dict = dict(scale_client.get_all_measurements())
+        _LOGGER.debug("Renpho scale data: %s", data)
+
+        # Girth (tape measure) measurements
+        try:
+            girth = GirthClient(self._email, self._password).fetch()
+            _LOGGER.debug("Renpho girth data: %s", girth)
+            data.update(girth)
+        except Exception as err:  # noqa: BLE001
+            _LOGGER.warning("Could not fetch Renpho girth data: %s", err)
+
         return data

@@ -11,7 +11,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import PERCENTAGE, UnitOfMass
+from homeassistant.const import PERCENTAGE, UnitOfLength, UnitOfMass
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -25,6 +25,11 @@ from .coordinator import RenphoCoordinator
 _ZERO_MEANS_UNAVAILABLE = {
     "bodyfat", "water", "muscle", "bone", "bmr", "bodyage",
     "protein", "visfat",
+    # girth fields — 0.0 means the user hasn't logged that measurement
+    "neck_value", "shoulder_value", "chest_value", "waist_value",
+    "hip_value", "abdomen_value", "arm_value", "thigh_value", "calf_value",
+    "left_arm_value", "right_arm_value", "left_thigh_value", "right_thigh_value",
+    "left_calf_value", "right_calf_value", "whr_value",
 }
 
 
@@ -125,6 +130,124 @@ SENSORS: tuple[RenphoSensorEntityDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         icon="mdi:stomach",
         suggested_display_precision=0,
+    ),
+    # --- Tape measure (girth) sensors ---
+    RenphoSensorEntityDescription(
+        key="neck",
+        data_key="neck_value",
+        name="Neck",
+        native_unit_of_measurement=UnitOfLength.CENTIMETERS,
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:tape-measure",
+        suggested_display_precision=1,
+    ),
+    RenphoSensorEntityDescription(
+        key="shoulder",
+        data_key="shoulder_value",
+        name="Shoulder",
+        native_unit_of_measurement=UnitOfLength.CENTIMETERS,
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:tape-measure",
+        suggested_display_precision=1,
+    ),
+    RenphoSensorEntityDescription(
+        key="chest",
+        data_key="chest_value",
+        name="Chest",
+        native_unit_of_measurement=UnitOfLength.CENTIMETERS,
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:tape-measure",
+        suggested_display_precision=1,
+    ),
+    RenphoSensorEntityDescription(
+        key="waist",
+        data_key="waist_value",
+        name="Waist",
+        native_unit_of_measurement=UnitOfLength.CENTIMETERS,
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:tape-measure",
+        suggested_display_precision=1,
+    ),
+    RenphoSensorEntityDescription(
+        key="hip",
+        data_key="hip_value",
+        name="Hip",
+        native_unit_of_measurement=UnitOfLength.CENTIMETERS,
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:tape-measure",
+        suggested_display_precision=1,
+    ),
+    RenphoSensorEntityDescription(
+        key="abdomen",
+        data_key="abdomen_value",
+        name="Abdomen",
+        native_unit_of_measurement=UnitOfLength.CENTIMETERS,
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:tape-measure",
+        suggested_display_precision=1,
+    ),
+    RenphoSensorEntityDescription(
+        key="left_arm",
+        data_key="left_arm_value",
+        name="Left Arm",
+        native_unit_of_measurement=UnitOfLength.CENTIMETERS,
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:tape-measure",
+        suggested_display_precision=1,
+    ),
+    RenphoSensorEntityDescription(
+        key="right_arm",
+        data_key="right_arm_value",
+        name="Right Arm",
+        native_unit_of_measurement=UnitOfLength.CENTIMETERS,
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:tape-measure",
+        suggested_display_precision=1,
+    ),
+    RenphoSensorEntityDescription(
+        key="left_thigh",
+        data_key="left_thigh_value",
+        name="Left Thigh",
+        native_unit_of_measurement=UnitOfLength.CENTIMETERS,
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:tape-measure",
+        suggested_display_precision=1,
+    ),
+    RenphoSensorEntityDescription(
+        key="right_thigh",
+        data_key="right_thigh_value",
+        name="Right Thigh",
+        native_unit_of_measurement=UnitOfLength.CENTIMETERS,
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:tape-measure",
+        suggested_display_precision=1,
+    ),
+    RenphoSensorEntityDescription(
+        key="left_calf",
+        data_key="left_calf_value",
+        name="Left Calf",
+        native_unit_of_measurement=UnitOfLength.CENTIMETERS,
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:tape-measure",
+        suggested_display_precision=1,
+    ),
+    RenphoSensorEntityDescription(
+        key="right_calf",
+        data_key="right_calf_value",
+        name="Right Calf",
+        native_unit_of_measurement=UnitOfLength.CENTIMETERS,
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:tape-measure",
+        suggested_display_precision=1,
+    ),
+    RenphoSensorEntityDescription(
+        key="whr",
+        data_key="whr_value",
+        name="Waist-Hip Ratio",
+        native_unit_of_measurement=None,
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:human-male",
+        suggested_display_precision=2,
     ),
 )
 
