@@ -70,7 +70,7 @@ class GirthClient:
             raise ValueError(f"Renpho girth login failed: {data.get('status_message')}")
         return data["terminal_user_session_key"], data["id"]
 
-    def _get_latest_girth(self, token: str, user_id: int) -> dict:
+    def _fetch_girths(self, token: str, user_id: int) -> list[dict]:
         resp = requests.get(
             f"{_BASE_URL}/girths/list_girth.json",
             headers=_HEADERS,
@@ -88,7 +88,17 @@ class GirthClient:
         if data.get("status_code") != "20000":
             raise ValueError(f"Renpho girth fetch failed: {data.get('status_message')}")
         girths = data.get("girths") or []
+        _LOGGER.debug("Fetched %d girth records", len(girths))
+        return girths
+
+    def _get_latest_girth(self, token: str, user_id: int) -> dict:
+        girths = self._fetch_girths(token, user_id)
         if not girths:
             _LOGGER.debug("No girth measurements found")
             return {}
         return girths[-1]  # most recent
+
+    def _fetch_all_girths(self) -> list[dict]:
+        """Return all girth records (for history import)."""
+        token, user_id = self._login()
+        return self._fetch_girths(token, user_id)
