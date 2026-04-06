@@ -26,10 +26,10 @@ _CM_TO_IN = 1 / 2.54
 _ZERO_MEANS_UNAVAILABLE = {
     "bodyfat", "water", "muscle", "bone", "bmr", "bodyage",
     "protein", "visfat",
-    "neck_value", "shoulder_value", "chest_value", "waist_value",
-    "hip_value", "abdomen_value", "arm_value", "thigh_value", "calf_value",
-    "left_arm_value", "right_arm_value", "left_thigh_value", "right_thigh_value",
-    "left_calf_value", "right_calf_value", "whr_value",
+    "neckValue", "shoulderValue", "chestValue", "waistValue",
+    "hipValue", "abdomenValue", "armValue", "thighValue", "calfValue",
+    "leftArmValue", "rightArmValue", "leftThighValue", "rightThighValue",
+    "leftCalfValue", "rightCalfValue", "whrValue",
 }
 
 
@@ -137,7 +137,7 @@ SENSORS: tuple[RenphoSensorEntityDescription, ...] = (
     # API returns centimeters; conversion_factor converts to inches natively.
     RenphoSensorEntityDescription(
         key="neck",
-        data_key="neck_value",
+        data_key="neckValue",
         name="Neck",
         native_unit_of_measurement=UnitOfLength.INCHES,
         state_class=SensorStateClass.MEASUREMENT,
@@ -147,7 +147,7 @@ SENSORS: tuple[RenphoSensorEntityDescription, ...] = (
     ),
     RenphoSensorEntityDescription(
         key="shoulder",
-        data_key="shoulder_value",
+        data_key="shoulderValue",
         name="Shoulder",
         native_unit_of_measurement=UnitOfLength.INCHES,
         state_class=SensorStateClass.MEASUREMENT,
@@ -157,7 +157,7 @@ SENSORS: tuple[RenphoSensorEntityDescription, ...] = (
     ),
     RenphoSensorEntityDescription(
         key="chest",
-        data_key="chest_value",
+        data_key="chestValue",
         name="Chest",
         native_unit_of_measurement=UnitOfLength.INCHES,
         state_class=SensorStateClass.MEASUREMENT,
@@ -167,7 +167,7 @@ SENSORS: tuple[RenphoSensorEntityDescription, ...] = (
     ),
     RenphoSensorEntityDescription(
         key="waist",
-        data_key="waist_value",
+        data_key="waistValue",
         name="Waist",
         native_unit_of_measurement=UnitOfLength.INCHES,
         state_class=SensorStateClass.MEASUREMENT,
@@ -177,7 +177,7 @@ SENSORS: tuple[RenphoSensorEntityDescription, ...] = (
     ),
     RenphoSensorEntityDescription(
         key="hip",
-        data_key="hip_value",
+        data_key="hipValue",
         name="Hip",
         native_unit_of_measurement=UnitOfLength.INCHES,
         state_class=SensorStateClass.MEASUREMENT,
@@ -187,7 +187,7 @@ SENSORS: tuple[RenphoSensorEntityDescription, ...] = (
     ),
     RenphoSensorEntityDescription(
         key="abdomen",
-        data_key="abdomen_value",
+        data_key="abdomenValue",
         name="Abdomen",
         native_unit_of_measurement=UnitOfLength.INCHES,
         state_class=SensorStateClass.MEASUREMENT,
@@ -197,7 +197,7 @@ SENSORS: tuple[RenphoSensorEntityDescription, ...] = (
     ),
     RenphoSensorEntityDescription(
         key="left_arm",
-        data_key="left_arm_value",
+        data_key="leftArmValue",
         name="Left Arm",
         native_unit_of_measurement=UnitOfLength.INCHES,
         state_class=SensorStateClass.MEASUREMENT,
@@ -207,7 +207,7 @@ SENSORS: tuple[RenphoSensorEntityDescription, ...] = (
     ),
     RenphoSensorEntityDescription(
         key="right_arm",
-        data_key="right_arm_value",
+        data_key="rightArmValue",
         name="Right Arm",
         native_unit_of_measurement=UnitOfLength.INCHES,
         state_class=SensorStateClass.MEASUREMENT,
@@ -217,7 +217,7 @@ SENSORS: tuple[RenphoSensorEntityDescription, ...] = (
     ),
     RenphoSensorEntityDescription(
         key="left_thigh",
-        data_key="left_thigh_value",
+        data_key="leftThighValue",
         name="Left Thigh",
         native_unit_of_measurement=UnitOfLength.INCHES,
         state_class=SensorStateClass.MEASUREMENT,
@@ -227,7 +227,7 @@ SENSORS: tuple[RenphoSensorEntityDescription, ...] = (
     ),
     RenphoSensorEntityDescription(
         key="right_thigh",
-        data_key="right_thigh_value",
+        data_key="rightThighValue",
         name="Right Thigh",
         native_unit_of_measurement=UnitOfLength.INCHES,
         state_class=SensorStateClass.MEASUREMENT,
@@ -237,7 +237,7 @@ SENSORS: tuple[RenphoSensorEntityDescription, ...] = (
     ),
     RenphoSensorEntityDescription(
         key="left_calf",
-        data_key="left_calf_value",
+        data_key="leftCalfValue",
         name="Left Calf",
         native_unit_of_measurement=UnitOfLength.INCHES,
         state_class=SensorStateClass.MEASUREMENT,
@@ -247,7 +247,7 @@ SENSORS: tuple[RenphoSensorEntityDescription, ...] = (
     ),
     RenphoSensorEntityDescription(
         key="right_calf",
-        data_key="right_calf_value",
+        data_key="rightCalfValue",
         name="Right Calf",
         native_unit_of_measurement=UnitOfLength.INCHES,
         state_class=SensorStateClass.MEASUREMENT,
@@ -257,7 +257,7 @@ SENSORS: tuple[RenphoSensorEntityDescription, ...] = (
     ),
     RenphoSensorEntityDescription(
         key="whr",
-        data_key="whr_value",
+        data_key="whrValue",
         name="Waist-Hip Ratio",
         native_unit_of_measurement=None,
         state_class=SensorStateClass.MEASUREMENT,
