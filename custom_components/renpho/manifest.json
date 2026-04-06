@@ -1,0 +1,11 @@
+{
+  "domain": "renpho",
+  "name": "Renpho",
+  "version": "1.0.0",
+  "documentation": "https://github.com/YOUR_USERNAME/ha-renpho",
+  "issue_tracker": "https://github.com/YOUR_USERNAME/ha-renpho/issues",
+  "requirements": ["renpho-api==0.1.0"],
+  "config_flow": true,
+  "codeowners": ["@YOUR_USERNAME"],
+  "iot_class": "cloud_polling"
+}

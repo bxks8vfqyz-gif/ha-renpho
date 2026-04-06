@@ -1,0 +1,20 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Renpho",
+        "description": "Enter your Renpho account credentials.",
+        "data": {
+          "email": "Email",
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to connect. Check your credentials and try again."
+    },
+    "abort": {
+      "already_configured": "This Renpho account is already configured."
+    }
+  }
+}
