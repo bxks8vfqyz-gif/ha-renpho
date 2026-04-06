@@ -86,17 +86,22 @@ class CloudGirthClient:
                 break
 
             payload = json.loads(_aes_decrypt(result["data"]))
-            _LOGGER.info("Cloud girth page %d decrypted payload keys: %s", page, list(payload.keys()) if isinstance(payload, dict) else payload)
-            _LOGGER.debug("Cloud girth page %d decrypted: %s", page, payload)
+            _LOGGER.info("Cloud girth decrypted payload type=%s sample=%s", type(payload).__name__, str(payload)[:200])
 
-            # Try common list field names
-            batch = (
-                payload.get("girthDataList")
-                or payload.get("measureDataList")
-                or payload.get("list")
-                or payload.get("data")
-                or []
-            )
+            # API returns either a list directly or a dict wrapping a list
+            if isinstance(payload, list):
+                batch = payload
+            elif isinstance(payload, dict):
+                batch = (
+                    payload.get("girthDataList")
+                    or payload.get("measureDataList")
+                    or payload.get("list")
+                    or payload.get("data")
+                    or []
+                )
+            else:
+                batch = []
+
             if not batch:
                 break
 
